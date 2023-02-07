@@ -1,3 +1,5 @@
+@import url(../fonts/fontawesome/css/font-awesome.css);
+
 
 body {
     margin: 3em 5em;
@@ -46,6 +48,7 @@ div.pdf {
 .header .logo {
     display: inline-block;
     float: left;
+    width: 80px;
     margin-right: 0px;
     margin-top: 8px;
 }
@@ -54,25 +57,47 @@ div.pdf {
     height: 55px;
     margin-top: 0;
     padding-top: 5px;
-    padding-right: 15px;
+    padding-right: 5px;
 }
 
 .header .meta {
     display: inline-block;
     float: right;
-    text-align: right;
+    width: 85%;
     margin-top: 14px; /* ioi-2019 */
-	font-weight: bold; /* ioi-2019 */
-    font-size: 12px;
 }
 
-.header .meta div:first-child {
- /*   font-family: "Courier New", monospace; */ /* ioi-2019 */
- /*   font-weight: bold; */  /* ioi-2019 */
-    font-size: 18px;
-    letter-spacing: -.03em;
-    line-height: 25px;
+.header .meta .contestmeta {
+    float: left;
+    text-align: left;
+    font-size: 22px;
+    line-height: 35px;
     margin: 0px;
+    margin-bottom: 5px;
+}
+
+.header .meta .roundmeta {
+    float: left;
+    text-align: left;
+    font-size: 14px;
+}
+
+.header .meta .taskmeta {
+    float: right;
+    text-align: right;
+    font-weight: bold; /* ioi-2019 */
+    font-size: 14px;
+}
+
+.header .meta .tasklevel {
+    float: right;
+    text-align: right;
+    font-family: "FontAwesome";
+    font-size: 20px;
+    /*letter-spacing: -.03em;*/
+    line-height: 35px;
+    margin: 0px;
+    margin-bottom: 5px;
 }
 
 .header hr {
@@ -84,7 +109,7 @@ div.pdf {
 
 .pdf.markdown-body {
     color: black;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .pdf.markdown-body code {

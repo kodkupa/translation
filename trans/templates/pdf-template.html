@@ -32,15 +32,17 @@
     <div class="markdown-body pdf">
         <div class="header">
             <div class="logo">
-                <img src="{{ static_path }}/img/logo_text.svg" />
+                <img src="{{ static_path }}/img/logo_text.png" />
             </div>
             <div class="meta">
-                <div>{{task_name}}</div>
-				<div>{{contest}} Tasks</div>
-                <div>{{language}} ({{country}})</div>
+                <div style="width: 100%; height: 35px; border-bottom: 1px solid #666;">
+                    <div class="contestmeta">Kódkupa &ndash; IIOT Válogatóverseny</div>
+                    <div class="tasklevel"><span style="color: #FFA500">{{task_level_active}}</span><span style="color: #808080">{{task_level_missing}}</span></div>
+                </div>
+                <div class="roundmeta">{{contest}}</div>
+                <div class="taskmeta"><code>{{task_name}}</code> &nbsp; <big>&bull;</big> &nbsp; <code>{{country}}</code></div>
             </div>
             <div style="clear: both;"></div>
-            <hr>
         </div>
         <div id="markdown" style="display: none">{{content}}</div>
         <div id="preview" class="rendered_content" dir="{{direction}}" lang="{{language_code}}"></div>

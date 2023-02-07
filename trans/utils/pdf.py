@@ -26,10 +26,21 @@ def render_pdf_template(translation, task_type,
     else:
         content = translation.get_latest_text()
 
+    try:
+        task_lvl = int(task.name[-1])
+        task_name_text = task.name[:-2]
+    except:
+        task_lvl = 0
+        task_name_text = task.name
+    finally:
+        task_lvlstr = (task_lvl * '\uf02d', (5-task_lvl) * '\uf02d')
+
     context = {
         'content': content,
         'contest': task.contest.title,
-        'task_name': task.name,
+        'task_name': task_name_text,
+        'task_level_active': task_lvlstr[0],
+        'task_level_missing': task_lvlstr[1],
         'country': requested_user.country.code,
         'language': requested_user.language.name,
         'language_code': requested_user.language.code,
@@ -80,7 +91,7 @@ def build_pdf(translation, task_type):
     )
     loop = asyncio.get_event_loop()
     loop.run_until_complete(convert_html_to_pdf(html, pdf_file_path))
-    add_page_numbers_to_pdf(pdf_file_path, task.name)
+    add_page_numbers_to_pdf(pdf_file_path, task.name[:-2])
     return pdf_file_path
 
 
@@ -120,21 +131,27 @@ async def convert_html_to_pdf(html, pdf_file_path):
 
 
 def add_page_numbers_to_pdf(pdf_file_path, task_name):
-    color =  '-color "0.4 0.4 0.4" '
-    cmd = ('cpdf -add-text "{0} (%Page of %EndPage)   " -font "Arial" ' + color + \
-          '-font-size 10 -bottomright .62in {1} -o {1}').format(task_name, pdf_file_path)
+    color =  '-color "0.0 0.0 0.0" '
+    cmd = ('cpdf -add-rectangle "480 1" ' + color + \
+          '-bottom .80in {0} -o {0}').format(pdf_file_path)
+    os.system(cmd)
+    cmd = ('cpdf -add-text "%Page / %EndPage     " -font "Arial" ' + color + \
+          '-font-size 10 -bottomright .62in {0} -o {0}').format(pdf_file_path)
+    os.system(cmd)
+    cmd = ('cpdf -add-text "   {0}" -font "Courier" ' + color + \
+          '-font-size 10 -bottomleft .62in {1} -o {1}').format(task_name, pdf_file_path)
     os.system(cmd)
 
 
 def build_printed_draft_pdf(contest_slug, pdf_file_path, info):
     os.system('mkdir -p media/draft/{}'.format(contest_slug))
     output_pdf_path = 'media/draft/{}/{}.pdf'.format(contest_slug, str(uuid4()))
-    _add_info_line_to_pdf(output_pdf_path, pdf_file_path, info)
+    # _add_info_line_to_pdf(output_pdf_path, pdf_file_path, info)
     return output_pdf_path
 
 
 def merge_final_pdfs(task_names, contest_slug, language_code):
-    os.system('mkdir -p media/merged/{}'.format(contest_slug)) # create dir silently if doeesnt exist
+    os.system('mkdir -p media/merged/{}'.format(contest_slug)) # create dir silently if doesn't exist
     output_pdf_path = 'media/merged/{}/{}-merged.pdf'.format(contest_slug, language_code)
 
     cmd = 'cpdf '
